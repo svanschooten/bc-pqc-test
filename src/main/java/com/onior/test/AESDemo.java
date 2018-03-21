@@ -4,7 +4,10 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.Console;
 
 public class AESDemo {
@@ -57,6 +60,21 @@ public class AESDemo {
                 console.printf("1 and 2 are the same: %b\n", key1.equals(key2));
                 console.printf("1 and 3 are not the same: %b\n", !key1.equals(key3));
                 console.printf("2 and 3 are not the same: %b\n\n", !key2.equals(key3));
+
+                String IV = "0000000000000000";
+                String pw = "test";
+                SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+                PBEKeySpec spec = new PBEKeySpec(pw.toCharArray(), IV.getBytes(), 1000, 256);
+                byte[] keyBytes = skf.generateSecret(spec).getEncoded();
+                SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, "AES");
+                Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+                cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new IvParameterSpec(IV.getBytes()));
+                byte[] encrypted = cipher.doFinal("hallo".getBytes());
+                System.out.println("password: " + pw);
+                System.out.println("iv (raw): " + IV);
+                System.out.println("cipher: " + Util.bytes2hex(encrypted));
+                System.out.println("key: " + Util.bytes2hex(secretKeySpec.getEncoded()));
+                System.out.println("iv: " + Util.bytes2hex(cipher.getIV()));
 
             } catch (Exception e) {
                 e.printStackTrace();
