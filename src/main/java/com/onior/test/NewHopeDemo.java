@@ -39,7 +39,6 @@ public class NewHopeDemo {
 
         // Using my own implementation
         try {
-            int i;
             byte[] RAW = new byte[100];
             byte[] S = new byte[1792];
             byte[] SB = new byte[1824];
@@ -50,11 +49,12 @@ public class NewHopeDemo {
             SRNG.clean();
 
             SecureRandom secureRandom = new SecureRandom();
-            for (i = 0; i < 100; i++) RAW[i] = (byte) secureRandom.nextInt();
+            for (int i = 0; i < 100; i++) RAW[i] = (byte) secureRandom.nextInt();
             SRNG.seed(100, RAW);
 
             NHS nhs = new NHS();
             nhs.SERVER_1(SRNG, SB, S);
+            for (int i = 0; i < SB.length; i++)  SB[i] = (byte) nhs.redc(SB[i]);
 
             System.out.println("SB:\n" + Util.bytes2hex(SB));
             System.out.println("Enter UC: ");

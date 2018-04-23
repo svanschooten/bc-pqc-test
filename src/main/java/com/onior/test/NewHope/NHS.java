@@ -27,7 +27,7 @@ public final class NHS {
         return (x + mask) ^ mask;
     }
 
-    private int redc(long T) {
+    public int redc(long T) {
         long m = (T * RLWE_ND) & 0xffffffffL;
         return (int) ((m * RLWE_PRIME + T) >>> WL);
     }

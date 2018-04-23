@@ -17,9 +17,9 @@ public class TestApplication {
         Security.addProvider(new BouncyCastleProvider());
         Security.addProvider(new BouncyCastlePQCProvider());
 
-//        NewHopeDemo.run();
-        AESDemo.run();
-        RSADemo.run();
+        NewHopeDemo.run();
+//        AESDemo.run();
+//        RSADemo.run();
 //        SIDHDemo.run();
 //        McElieceDemo.run();
 //        NTRUDemo.run();
